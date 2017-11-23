@@ -1,3 +1,5 @@
+require "packets.rb"
+
 require "msgpack"
 require "openssl"
 require "socket"
@@ -7,9 +9,7 @@ module Synacrb
     class Session
         # Connect to the server
         def initialize(addr, hash, &callback)
-            puts "1"
             tcp = TCPSocket.new addr, 8439
-            puts "2"
 
             @hash = hash
 
@@ -20,7 +20,6 @@ module Synacrb
             context.verify_callback = callback
             context.verify_mode = OpenSSL::SSL::VERIFY_PEER
 
-            puts "5"
             @stream = OpenSSL::SSL::SSLSocket.new tcp, context
             @stream.connect
         end
@@ -33,7 +32,32 @@ module Synacrb
             hash[0].casecmp(@hash).zero?
         end
 
+        # Returns inner connection
+        def inner_stream()
+            @stream
+        end
 
+        # Transmit a packet over the connection
+        def send(packet)
+            id = Common.packet_to_id(packet)
+            data = [id, [packet.to_a]].to_msgpack
+            size1 = data.length >> 8
+            size2 = data.length % 256
+
+            @stream.write [size1, size2].pack("U*")
+            @stream.write data
+        end
+
+        # Read a packet from the connection
+        def read()
+            size_a = @stream.read 2
+            size = (size_a[0].ord << 8) + size_a[1].ord
+            data = @stream.read size
+
+            data = MessagePack.unpack data
+            class_ = Common.packet_from_id data[0]
+            class_.new *data[1][0]
+        end
 
         # Close the connection
         def close()
