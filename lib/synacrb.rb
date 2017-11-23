@@ -1,3 +1,4 @@
+require "state.rb"
 require "packets.rb"
 
 require "msgpack"
@@ -37,6 +38,19 @@ module Synacrb
             @stream
         end
 
+        # Sends the login packet with specific password.
+        # Read the result with `read`.
+        # Warning: Strongly disencouraged. Use tokens instead, when possible.
+        def login_with_password(bot, name, password)
+            send Common::Login.new(bot, name, password, nil)
+        end
+
+        # Sends the login packet with specific token.
+        # Read the result with `read`.
+        def login_with_token(bot, name, token)
+            send Common::Login.new(bot, name, nil, token)
+        end
+
         # Transmit a packet over the connection
         def send(packet)
             id = Common.packet_to_id(packet)
@@ -61,6 +75,7 @@ module Synacrb
 
         # Close the connection
         def close()
+            send(Common::Close)
             @stream.close
         end
     end
