@@ -20,7 +20,25 @@ Or install it yourself as:
 
 ## Usage
 
-TODO: Write usage instructions here
+Example:  
+```Ruby
+session = Synacrb::Session.new "<address>", "<certificate hash>"
+session.login_with_token true, "<username>", "<token>" # true indicates bot account
+
+# First message should be LoginSuccess or an error
+result = session.read
+# TODO: Use result
+
+# Initiate state
+state = Synacrb::State.new
+
+# Main loop
+loop do
+    packet = session.read
+    state.update packet
+    # TODO: Use packet
+end
+```
 
 ## Development
 
