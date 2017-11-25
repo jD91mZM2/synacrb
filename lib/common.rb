@@ -1,6 +1,7 @@
 module Synacrb
     module Common
         DEFAULT_PORT = 8439
+        RSA_LENGTH   = 3072
         TYPING_TIMEOUT = 10
 
         LIMIT_USER_NAME = 128
@@ -75,6 +76,13 @@ module Synacrb
         PACKET_PMRECEIVE_ID = 28;            PMReceive = Struct.new(:author, :text)
         PACKET_TYPINGRECEIVE_ID = 29;        TypingReceive = Struct.new(:author, :channel)
         PACKET_USERRECEIVE_ID = 30;          UserReceive = Struct.new(:inner)
+
+        def self.encode_u16(input)
+            (input >> 8).chr + (input % 256).chr
+        end
+        def self.decode_u16(input)
+            (input[0].ord << 8) + input[1].ord
+        end
 
         def self.packet_from_id(id)
             case id

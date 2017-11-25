@@ -1,5 +1,6 @@
+require "common.rb"
+require "encrypter.rb"
 require "state.rb"
-require "packets.rb"
 
 require "msgpack"
 require "openssl"
@@ -55,17 +56,15 @@ module Synacrb
         def send(packet)
             id = Common.packet_to_id(packet)
             data = [id, [packet.to_a]].to_msgpack
-            size1 = data.length >> 8
-            size2 = data.length % 256
 
-            @stream.write [size1, size2].pack("U*")
+            @stream.write Common.encode_u16(data.length)
             @stream.write data
         end
 
         # Read a packet from the connection
         def read()
             size_a = @stream.read 2
-            size = (size_a[0].ord << 8) + size_a[1].ord
+            size = Common.decode_u16(size_a)
             data = @stream.read size
 
             data = MessagePack.unpack data
