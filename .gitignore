@@ -7,3 +7,4 @@
 /spec/reports/
 /tmp/
 synacrb-*.gem
+/lib/test.rb

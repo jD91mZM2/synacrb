@@ -8,6 +8,17 @@ require "socket"
 require "synacrb/version"
 
 module Synacrb
+    # Get the mode bitmask for a user in a channel
+    def self.get_mode(channel, user)
+        if user.bot
+            return channel.default_mode_bot unless user.modes.include? channel.id
+            user.modes[channel.id]
+        else
+            return channel.default_mode_user unless user.modes.include? channel.id
+            user.modes[channel.id]
+        end
+    end
+
     class Session
         # Connect to the server
         def initialize(addr, hash, &callback)
