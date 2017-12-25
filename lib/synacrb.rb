@@ -1,10 +1,10 @@
-require "common.rb"
-require "encrypter.rb"
-require "state.rb"
-
 require "msgpack"
 require "openssl"
 require "socket"
+
+require "synacrb/common"
+require "synacrb/encrypter"
+require "synacrb/state"
 require "synacrb/version"
 
 module Synacrb
