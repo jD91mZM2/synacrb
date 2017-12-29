@@ -61,10 +61,11 @@ module Synacrb
         PACKET_COMMANDRECEIVE_ID       = 19; CommandReceive = Struct.new(:args, :author)
         PACKET_LOGINSUCCESS_ID         = 20; LoginSuccess = Struct.new(:created, :id, :token)
         PACKET_MESSAGEDELETERECEIVE_ID = 21; MessageDeleteReceive = Struct.new(:id)
-        PACKET_MESSAGERECEIVE_ID       = 22; MessageReceive = Struct.new(:inner, :new)
-        PACKET_PMRECEIVE_ID            = 23; PMReceive = Struct.new(:author, :text)
-        PACKET_TYPINGRECEIVE_ID        = 24; TypingReceive = Struct.new(:author, :channel)
-        PACKET_USERRECEIVE_ID          = 25; UserReceive = Struct.new(:inner)
+        PACKET_MESSAGELISTRECEIVED_ID  = 22; MessageListReceived = Struct.new(:id)
+        PACKET_MESSAGERECEIVE_ID       = 23; MessageReceive = Struct.new(:inner, :new)
+        PACKET_PMRECEIVE_ID            = 24; PMReceive = Struct.new(:author, :text)
+        PACKET_TYPINGRECEIVE_ID        = 25; TypingReceive = Struct.new(:author, :channel)
+        PACKET_USERRECEIVE_ID          = 26; UserReceive = Struct.new(:inner)
 
         def self.encode_u16(input)
             (input >> 8).chr + (input % 256).chr
@@ -115,6 +116,8 @@ module Synacrb
                 LoginSuccess
             when PACKET_MESSAGEDELETERECEIVE_ID
                 MessageDeleteReceive
+            when PACKET_MESSAGELISTRECEIVED_ID
+                MessageListReceived
             when PACKET_MESSAGERECEIVE_ID
                 MessageReceive
             when PACKET_PMRECEIVE_ID
@@ -166,6 +169,8 @@ module Synacrb
                 PACKET_LOGINSUCCESS_ID
             elsif packet.instance_of? MessageDeleteReceive
                 PACKET_MESSAGEDELETERECEIVE_ID
+            elsif packet.instance_of? MessageListReceived
+                PACKET_MESSAGELISTRECEIVED_ID
             elsif packet.instance_of? MessageReceive
                 PACKET_MESSAGERECEIVE_ID
             elsif packet.instance_of? PMReceive
