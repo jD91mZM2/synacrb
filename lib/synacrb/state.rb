@@ -28,5 +28,32 @@ module Synacrb
                 @users[packet.inner.id] = packet.inner
             end
         end
+
+        # Search for a private channel with user
+        def get_private_channel(user)
+            @users.keys
+                .map { |channel| @channels[channel] }
+                .compact
+                .find { |channel| channel.private }
+            # the server doesn't send PMs you don't have access to
+        end
+
+        # Search for the recipient in a private channel
+        def get_recipient(channel)
+            if channel.private
+                return nil
+            end
+            get_recipient_unchecked channel.id
+        end
+
+        # Search for the recipient in a private channel.
+        # If the channel isn't private, it returns the first user it can find
+        # that has a special mode in that channel.
+        # So you should probably make sure it's private first.
+        def get_recipient_unchecked(channel_id)
+            @users.values
+                .find { |user| user.modes.keys
+                    .any { |channel| channel == channel_id }}
+        end
     end
 end
