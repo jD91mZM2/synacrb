@@ -21,8 +21,8 @@ module Synacrb
 
     class Session
         # Connect to the server
-        def initialize(addr, hash, &callback)
-            tcp = TCPSocket.new addr, 8439
+        def initialize(addr, hash, port = Common::DEFAULT_PORT, &callback)
+            tcp = TCPSocket.new addr, port
 
             @hash = hash
 
@@ -85,7 +85,6 @@ module Synacrb
 
         # Close the connection
         def close()
-            send(Common::Close)
             @stream.close
         end
     end

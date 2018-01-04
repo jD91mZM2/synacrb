@@ -38,33 +38,32 @@ module Synacrb
         User = Struct.new(:admin, :ban, :bot, :id, :modes, :name)
 
         # CLIENT PACKETS
-        PACKET_CLOSE_ID             = 0;  Close = Class.new
-        PACKET_ERR_ID               = 1;
-        PACKET_RATELIMIT_ID         = 2;
-        PACKET_CHANNELCREATE_ID     = 3;  ChannelCreate = Struct.new(:default_mode_bot, :default_mode_user, :name, :recipient)
-        PACKET_CHANNELDELETE_ID     = 4;  ChannelDelete = Struct.new(:id)
-        PACKET_CHANNELUPDATE_ID     = 5;  ChannelUpdate = Struct.new(:inner)
-        PACKET_COMMAND_ID           = 6;  Command = Struct.new(:args, :recipient)
-        PACKET_LOGIN_ID             = 7;  Login = Struct.new(:bot, :name, :password, :token)
-        PACKET_LOGINUPDATE_ID       = 8;  LoginUpdate = Struct.new(:name, :password_current, :password_new, :reset_token)
-        PACKET_MESSAGECREATE_ID     = 9;  MessageCreate = Struct.new(:channel, :text)
-        PACKET_MESSAGEDELETE_ID     = 10; MessageDelete = Struct.new(:id)
-        PACKET_MESSAGEDELETEBULK_ID = 11; MessageDeleteBulk = Struct.new(:channel, :ids)
-        PACKET_MESSAGELIST_ID       = 12; MessageList = Struct.new(:after, :before, :channel, :limit)
-        PACKET_MESSAGEUPDATE_ID     = 13; MessageUpdate = Struct.new(:id, :text)
-        PACKET_TYPING_ID            = 14; Typing = Struct.new(:channel)
-        PACKET_USERUPDATE_ID        = 15; UserUpdate = Struct.new(:admin, :ban, :channel_mode, :id)
+        PACKET_ERR_ID               = 0;
+        PACKET_RATELIMIT_ID         = 1;
+        PACKET_CHANNELCREATE_ID     = 2;  ChannelCreate = Struct.new(:default_mode_bot, :default_mode_user, :name, :recipient)
+        PACKET_CHANNELDELETE_ID     = 3;  ChannelDelete = Struct.new(:id)
+        PACKET_CHANNELUPDATE_ID     = 4;  ChannelUpdate = Struct.new(:inner)
+        PACKET_COMMAND_ID           = 5;  Command = Struct.new(:args, :recipient)
+        PACKET_LOGIN_ID             = 6;  Login = Struct.new(:bot, :name, :password, :token)
+        PACKET_LOGINUPDATE_ID       = 7;  LoginUpdate = Struct.new(:name, :password_current, :password_new, :reset_token)
+        PACKET_MESSAGECREATE_ID     = 8;  MessageCreate = Struct.new(:channel, :text)
+        PACKET_MESSAGEDELETE_ID     = 9;  MessageDelete = Struct.new(:id)
+        PACKET_MESSAGEDELETEBULK_ID = 10; MessageDeleteBulk = Struct.new(:channel, :ids)
+        PACKET_MESSAGELIST_ID       = 11; MessageList = Struct.new(:after, :before, :channel, :limit)
+        PACKET_MESSAGEUPDATE_ID     = 12; MessageUpdate = Struct.new(:id, :text)
+        PACKET_TYPING_ID            = 13; Typing = Struct.new(:channel)
+        PACKET_USERUPDATE_ID        = 14; UserUpdate = Struct.new(:admin, :ban, :channel_mode, :id)
 
         # SERVER PACKETS
-        PACKET_CHANNELDELETERECEIVE_ID = 16; ChannelDeleteReceive = Struct.new(:inner)
-        PACKET_CHANNELRECEIVE_ID       = 17; ChannelReceive = Struct.new(:inner)
-        PACKET_COMMANDRECEIVE_ID       = 18; CommandReceive = Struct.new(:args, :author)
-        PACKET_LOGINSUCCESS_ID         = 19; LoginSuccess = Struct.new(:created, :id, :token)
-        PACKET_MESSAGEDELETERECEIVE_ID = 20; MessageDeleteReceive = Struct.new(:id)
-        PACKET_MESSAGELISTRECEIVED_ID  = 21; MessageListReceived = Struct.new(:id)
-        PACKET_MESSAGERECEIVE_ID       = 22; MessageReceive = Struct.new(:inner, :new)
-        PACKET_TYPINGRECEIVE_ID        = 23; TypingReceive = Struct.new(:author, :channel)
-        PACKET_USERRECEIVE_ID          = 24; UserReceive = Struct.new(:inner)
+        PACKET_CHANNELDELETERECEIVE_ID = 15; ChannelDeleteReceive = Struct.new(:inner)
+        PACKET_CHANNELRECEIVE_ID       = 16; ChannelReceive = Struct.new(:inner)
+        PACKET_COMMANDRECEIVE_ID       = 17; CommandReceive = Struct.new(:args, :author)
+        PACKET_LOGINSUCCESS_ID         = 18; LoginSuccess = Struct.new(:created, :id, :token)
+        PACKET_MESSAGEDELETERECEIVE_ID = 19; MessageDeleteReceive = Struct.new(:id)
+        PACKET_MESSAGELISTRECEIVED_ID  = 20; MessageListReceived = Struct.new(:id)
+        PACKET_MESSAGERECEIVE_ID       = 21; MessageReceive = Struct.new(:inner, :new)
+        PACKET_TYPINGRECEIVE_ID        = 22; TypingReceive = Struct.new(:author, :channel)
+        PACKET_USERRECEIVE_ID          = 23; UserReceive = Struct.new(:inner)
 
         def self.encode_u16(input)
             (input >> 8).chr + (input % 256).chr
@@ -75,8 +74,6 @@ module Synacrb
 
         def self.packet_from_id(id)
             case id
-            when PACKET_CLOSE_ID
-                Close
             when PACKET_CHANNELCREATE_ID
                 ChannelCreate
             when PACKET_CHANNELDELETE_ID
@@ -124,9 +121,7 @@ module Synacrb
             end
         end
         def self.packet_to_id(packet)
-            if packet.instance_of? Close
-                PACKET_CLOSE_ID
-            elsif packet.instance_of? ChannelCreate
+            if packet.instance_of? ChannelCreate
                 PACKET_CHANNELCREATE_ID
             elsif packet.instance_of? ChannelDelete
                 PACKET_CHANNELDELETE_ID
