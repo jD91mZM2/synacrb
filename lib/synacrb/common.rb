@@ -10,19 +10,19 @@ module Synacrb
 
         LIMIT_BULK = 64
 
-        ERR_ALREADY_EXISTS     = 1
-        ERR_LIMIT_REACHED      = 2
-        ERR_LOGIN_BANNED       = 3
-        ERR_LOGIN_BOT          = 4
-        ERR_LOGIN_INVALID      = 5
-        ERR_MAX_CONN_PER_IP    = 6
-        ERR_MISSING_FIELD      = 7
-        ERR_MISSING_PERMISSION = 8
-        ERR_SELF_PM            = 9
-        ERR_UNKNOWN_BOT        = 10
-        ERR_UNKNOWN_CHANNEL    = 11
-        ERR_UNKNOWN_MESSAGE    = 12
-        ERR_UNKNOWN_USER       = 13
+        ERR_ALREADY_EXISTS     = 0
+        ERR_LIMIT_REACHED      = 1
+        ERR_LOGIN_BANNED       = 2
+        ERR_LOGIN_BOT          = 3
+        ERR_LOGIN_INVALID      = 4
+        ERR_MAX_CONN_PER_IP    = 5
+        ERR_MISSING_FIELD      = 6
+        ERR_MISSING_PERMISSION = 7
+        ERR_SELF_PM            = 8
+        ERR_UNKNOWN_BOT        = 9
+        ERR_UNKNOWN_CHANNEL    = 10
+        ERR_UNKNOWN_MESSAGE    = 11
+        ERR_UNKNOWN_USER       = 12
 
         PERM_READ              = 1
         PERM_WRITE             = 1 << 1
