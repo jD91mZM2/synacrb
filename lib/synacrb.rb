@@ -3,7 +3,6 @@ require "openssl"
 require "socket"
 
 require "synacrb/common"
-require "synacrb/encrypter"
 require "synacrb/state"
 require "synacrb/version"
 
